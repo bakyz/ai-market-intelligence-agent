@@ -25,16 +25,17 @@ def scrape_reddit(limit=100):
                 "body": post.selftext,
                 "score": post.score,
                 "comments": post.num_comments,
-                "created_at": datetime.fromtimestamp(post.created_utc).isformat(),
+                "created_at": datetime.fromtimestamp(post.created_utc).isoformat(),
                 "source": f"reddit/r/{sub}"
             })
-        
-        file_path = os.path.join(settings.paths.RAW_DATA, "reddit.json")
-        with open(file_path, "w", encoding="utf-8") as f:
-            json.dump(all_posts, f, ensure_ascii=False)
-        
-        print(f"Scraped {len(all_posts)} Reddit posts -> {file_path}")
-        return file_path
+    
+    file_path = os.path.join(settings.paths.RAW_DATA, "reddit.json")
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(all_posts, f, ensure_ascii=False)
+    
+    print(f"Scraped {len(all_posts)} Reddit posts -> {file_path}")
+    return file_path
     
 if __name__ == "__main__":
     scrape_reddit(limit=settings.scraper.REDDIT_LIMIT)

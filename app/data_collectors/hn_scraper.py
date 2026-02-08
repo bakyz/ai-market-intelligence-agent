@@ -34,4 +34,4 @@ def scrape_hackernews(limit=100):
     return file_path
 
 if __name__ == "__main__":
-    scrape_hackernews(limit=settings.scraper.X_LIMIT)
+    scrape_hackernews(limit=settings.scraper.HN_LIMIT)

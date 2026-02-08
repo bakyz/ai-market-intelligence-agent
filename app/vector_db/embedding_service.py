@@ -1,14 +1,15 @@
 import time
 from openai import OpenAI
 from app.vector_db.logger import get_logger
+from app.config.settings import get_settings
 
-
+settings = get_settings()
 logger = get_logger("embedding_service")
 
 
 class EmbeddingService:
     def __init__(self, model: str, max_retries=3):
-        self.client = OpenAI()
+        self.client = OpenAI(api_key=settings.OPENAI_API_KEY)
         self.model = model
         self.max_retries = max_retries
 
