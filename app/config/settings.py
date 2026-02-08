@@ -48,6 +48,7 @@ class ObservabilityConfig(BaseSettings):
 # =========================
 class ScraperConfig(BaseSettings):
     REDDIT_LIMIT: int = 100
+    HN_LIMIT: int = 100
     X_LIMIT: int = 100
     REQUEST_TIMEOUT: int = 10
     RETRIES: int = 3

@@ -22,5 +22,8 @@ class ChromaVectorDB:
         )
     
     def query(self, query_embedding, top_k=5):
-        return self.collection_query(query_embedding=query_embedding, n_results=top_k)
+        return self.collection.query(
+            query_embeddings=[query_embedding],
+            n_results=top_k
+        )
     
