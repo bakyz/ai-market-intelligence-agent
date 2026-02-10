@@ -1,0 +1,17 @@
+# Core dependencies
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+# OpenAI API
+openai>=1.0.0
+
+# Vector Database
+chromadb>=0.4.0
+
+# Data Collection
+praw>=7.7.0  # Reddit API
+requests>=2.31.0  # HTTP requests (Hacker News)
+
+# Utilities
+tqdm>=4.65.0  # Progress bars
+
