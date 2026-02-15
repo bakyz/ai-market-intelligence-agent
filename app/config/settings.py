@@ -112,7 +112,7 @@ class Paths(BaseSettings):
 # Root Application Settings
 # =========================
 class AppSettings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     OPENAI_API_KEY: str
     PINECONE_API_KEY: str | None = None

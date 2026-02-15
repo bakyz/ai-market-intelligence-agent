@@ -10,7 +10,7 @@ from app.agents.schemas import (
 from app.llm.model_router import ModelRouter
 
 
-class EvaluateAgent(BaseAgent):
+class EvaluatorAgent(BaseAgent):
     def __init__(self):
         super().__init__(
             role=AgentRole.EVALUATOR,

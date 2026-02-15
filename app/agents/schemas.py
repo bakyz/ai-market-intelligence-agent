@@ -9,6 +9,9 @@ class AgentRole(str, Enum):
     MARKET_ANALYST = "market_analyst"
     EVALUATOR = "evaluator"
     IDEA_GENERATOR = "idea_generator"
+    PLANNER = "planner"
+    EXECUTOR = "executor"
+    CRITIC = "critic"
 
 
 class TaskStatus(str, Enum):
@@ -98,4 +101,109 @@ class OrchestrationResult:
     summary: str = ""
     execution_time: float = 0.0
     status: TaskStatus = TaskStatus.PENDING
+
+
+# =========================
+# Planning System Schemas
+# =========================
+
+@dataclass
+class TaskNode:
+    """Represents a single task in the task graph"""
+    task_id: str
+    description: str
+    task_type: str
+    dependencies: List[str]  # List of task_ids that must complete first
+    agent_role: AgentRole
+    input_data: Dict[str, Any]
+    status: TaskStatus = TaskStatus.PENDING
+    result: Optional[Any] = None
+    error: Optional[str] = None
+
+
+@dataclass
+class Plan:
+    """Represents a complete execution plan"""
+    plan_id: str
+    goal: str
+    tasks: List[TaskNode]
+    created_at: datetime
+    version: int = 1
+    metadata: Dict[str, Any] = None
+
+
+@dataclass
+class Critique:
+    """Result from critic agent evaluation"""
+    completeness_score: float  # 0.0-1.0
+    evidence_strength_score: float  # 0.0-1.0
+    coherence_score: float  # 0.0-1.0
+    actionability_score: float  # 0.0-1.0
+    overall_score: float  # 0.0-1.0
+    weaknesses: List[str]
+    missing_components: List[str]
+    improvement_suggestions: List[str]
+    should_iterate: bool
+    confidence: float  # 0.0-1.0
+    timestamp: datetime
+
+
+# =========================
+# Memory System Schemas
+# =========================
+
+@dataclass
+class MemoryEntry:
+    """Single memory entry"""
+    memory_id: str
+    content: str
+    metadata: Dict[str, Any]
+    timestamp: datetime
+    memory_type: str  # "action", "reasoning", "result", "feedback"
+
+
+@dataclass
+class Experience:
+    """Long-term experience entry"""
+    experience_id: str
+    goal: str
+    plan: Optional[Plan]
+    result: Any
+    critique: Optional[Critique]
+    success: bool
+    lessons_learned: List[str]
+    timestamp: datetime
+    metadata: Dict[str, Any] = None
+
+
+# =========================
+# Autonomous Loop Schemas
+# =========================
+
+@dataclass
+class IterationResult:
+    """Result from a single iteration"""
+    iteration_number: int
+    plan: Plan
+    execution_result: Any
+    critique: Critique
+    execution_time: float
+    token_usage: Optional[int] = None
+    cost: Optional[float] = None
+    timestamp: datetime = None
+
+
+@dataclass
+class AutonomousExecutionResult:
+    """Final result from autonomous execution"""
+    execution_id: str
+    goal: str
+    iterations: List[IterationResult]
+    final_result: Any
+    total_iterations: int
+    total_execution_time: float
+    total_cost: Optional[float] = None
+    total_tokens: Optional[int] = None
+    status: TaskStatus = TaskStatus.PENDING
+    termination_reason: str = ""  # "threshold_met", "max_iterations", "error", "timeout"
 

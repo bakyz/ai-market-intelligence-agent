@@ -28,3 +28,7 @@ class EmbeddingService:
                 time.sleep(wait)
 
         raise RuntimeError("Embedding failed after retries")
+    
+    def embed(self, text):
+        """Embed a single string."""
+        return self.embed_batch([text])[0]
